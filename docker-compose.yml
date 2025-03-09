@@ -1,9 +1,24 @@
 services:
+  auth:
+    build: ./apps/auth
+    container_name: auth
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./apps/auth:/app
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
   mongodb:
     image: mongo:latest
     container_name: mongodb
-    restart: unless-stopped
-    env_file: .env
+    restart: always
+    env_file:
+      - .env
     ports:
       - "27017:27017"
     volumes:

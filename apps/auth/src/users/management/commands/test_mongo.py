@@ -1,10 +1,12 @@
 import os
+
 from django.core.management.base import BaseCommand
 from mongoengine import connect
 from pymongo.errors import ConnectionFailure, ServerSelectionTimeoutError
 
+
 class Command(BaseCommand):
-    help = 'Test MongoDB connection'
+    help = "Test MongoDB connection"
 
     def handle(self, *args, **options):
         try:
@@ -22,13 +24,14 @@ class Command(BaseCommand):
                 port=port,
                 username=username,
                 password=password,
-                authentication_source='admin'
+                authentication_source="admin",
             )
 
             # Проверка соединения
             from mongoengine.connection import get_connection
+
             conn = get_connection()
-            conn.admin.command('ping')  # Явная проверка доступности
+            conn.admin.command("ping")  # Явная проверка доступности
 
             self.stdout.write(self.style.SUCCESS("✅ MongoDB connection successful!"))
 

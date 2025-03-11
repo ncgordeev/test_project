@@ -67,30 +67,9 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "core.wsgi.application"
-
+# settings.py
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-MONGODB_DATABASES = {
-    "default": {
-        "name": os.getenv("MONGODB_NAME"),
-        "host": os.getenv("MONGODB_HOST"),
-        "port": int(os.getenv("MONGODB_PORT")),
-        "username": os.getenv("MONGODB_USER"),
-        "password": os.getenv("MONGODB_PASSWORD"),
-        "authentication_source": "admin",
-    }
-}
-
-# Инициализация подключения
-mongoengine.connect(
-    db=MONGODB_DATABASES["default"]["name"],
-    host=MONGODB_DATABASES["default"]["host"],
-    port=MONGODB_DATABASES["default"]["port"],
-    username=MONGODB_DATABASES["default"].get("username"),
-    password=MONGODB_DATABASES["default"].get("password"),
-    authentication_source=MONGODB_DATABASES["default"].get("authentication_source"),
-)
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.dummy",
@@ -118,7 +97,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "ru-ru"
 
 TIME_ZONE = "UTC"
 
@@ -137,6 +116,9 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "users.User"
+AUTHENTICATION_BACKENDS = [
+    "users.backends.MongoDBAuthBackend",
+]
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (

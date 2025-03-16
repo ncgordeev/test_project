@@ -1,4 +1,5 @@
 import os
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -6,16 +7,16 @@ load_dotenv()
 from pymongo import MongoClient
 
 
-def get_db_handle(db_name, host, port, username, password):
+def get_db_handle():
     client = MongoClient(
-        host=host, port=int(port), username=username, password=password
+        host=os.getenv("MONGODB_HOST"),
+        port=int(os.getenv("MONGODB_PORT")),
+        username=os.getenv("MONGODB_USER"),
+        password=os.getenv("MONGODB_PASSWORD"),
     )
-    db_handle = client["db_name"]
+    db_handle = client[os.getenv("MONGODB_NAME")]
     return db_handle, client
 
 
-username = os.getenv("MONGODB_USER")
-password = os.getenv("MONGODB_PASSWORD")
-hostname = os.getenv("MONGODB_HOST")
-db_name = os.getenv("MONGODB_NAME")
-port = os.getenv("MONGODB_PORT")
+db, connect = get_db_handle()
+users_collection = db["users"]

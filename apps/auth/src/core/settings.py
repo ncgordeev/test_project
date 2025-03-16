@@ -1,7 +1,7 @@
 import os
+from datetime import timedelta
 from pathlib import Path
 
-import mongoengine
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -115,16 +115,15 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTH_USER_MODEL = "users.User"
-AUTHENTICATION_BACKENDS = [
-    "users.backends.MongoDBAuthBackend",
-]
-
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ),
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
-    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": ("users.authentication.MongoJWTAuthentication",),
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "USER_ID_FIELD": "_id",
+    "USER_ID_CLAIM": "user_id",
+    "SIGNING_KEY": os.getenv("SECRET_KEY"),
+    "ALGORITHM": "HS256",
 }

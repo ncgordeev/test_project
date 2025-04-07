@@ -1,0 +1,30 @@
+services:
+  reverse-proxy:
+    image: traefik:v3.3
+    container_name: reverse-proxy
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedByDefault=false"
+      - "--entrypoints.web.address=:8080"
+      - "--log.level=DEBUG"
+      - "--accesslog=true"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.forward-auth-middleware.forwardauth.address=http://auth-service-api:8080/auth"
+      - "traefik.http.middlewares.forward-auth-middleware.forwardauth.trustForwardHeader=true"
+      - "traefik.http.middlewares.forward-auth-middleware.forwardauth.authResponseHeaders=Authorization,X-USER-ROLE"
+    networks:
+      - services-network
+
+networks:
+  services-network:
+    driver: bridge
+
+include:
+  - ./apps/auth/docker-compose.yml

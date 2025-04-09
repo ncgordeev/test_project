@@ -7,8 +7,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from src.users.authentication import MongoJWTAuthentication
-from src.utils import users_collection
+from .authentication import MongoJWTAuthentication
+from .utils import users_collection
 
 
 class SignupView(APIView):

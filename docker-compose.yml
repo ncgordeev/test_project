@@ -6,7 +6,7 @@ services:
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedByDefault=false"
-      - "--entrypoints.web.address=:8080"
+      - "--entrypoints.web.address=:80"
       - "--log.level=DEBUG"
       - "--accesslog=true"
     ports:
@@ -16,11 +16,22 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     labels:
       - "traefik.enable=true"
-      - "traefik.http.middlewares.forward-auth-middleware.forwardauth.address=http://auth-service-api:8080/auth"
+      - "traefik.http.middlewares.forward-auth-middleware.forwardauth.address=http://auth-service-api/auth/"
       - "traefik.http.middlewares.forward-auth-middleware.forwardauth.trustForwardHeader=true"
       - "traefik.http.middlewares.forward-auth-middleware.forwardauth.authResponseHeaders=Authorization,X-USER-ROLE"
     networks:
       - services-network
+
+  whoami:
+      image: traefik/whoami
+      container_name: "whoami"
+      networks:
+        - services-network
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.whoami.rule=Host(`whoami.localhost`)"
+        - "traefik.http.routers.whoami.entrypoints=web"
+        - "traefik.http.routers.whoami.middlewares=forward-auth-middleware"
 
 networks:
   services-network:

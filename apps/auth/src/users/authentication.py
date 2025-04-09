@@ -2,7 +2,7 @@ from bson import ObjectId
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
-from src.utils import users_collection
+from .utils import users_collection
 
 
 class MongoJWTAuthentication(JWTAuthentication):

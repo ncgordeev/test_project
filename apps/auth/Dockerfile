@@ -15,4 +15,4 @@ RUN poetry install --no-interaction --no-ansi --no-root
 
 COPY . /app/
 
-CMD ["poetry", "run", "python",  "src/manage.py", "runserver", "0.0.0.0:80"]
+CMD ["poetry", "run", "python",  "src/manage.py", "runserver", "--noreload", "0.0.0.0:80"]

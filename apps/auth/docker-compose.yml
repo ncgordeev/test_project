@@ -5,17 +5,15 @@ services:
     restart: always
     env_file:
       - .env
-    ports:
-      - "8000:8000"
     volumes:
       - .:/app
     networks:
-      - auth-network
+      - services-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.auth-service-api.rule=Host(`localhost`) && PathPrefix(`/auth`)"
+      - "traefik.http.routers.auth-service-api.rule=Host(`auth.localhost`) && PathPrefix(`/`)"
       - "traefik.http.routers.auth-service-api.entrypoints=web"
-      - "traefik.http.services.auth-service-api.loadbalancer.server.port=8000"
+      - "traefik.http.services.auth-service-api.loadbalancer.server.port=80"
     depends_on:
       auth-service-mongodb:
         condition: service_healthy
@@ -27,11 +25,11 @@ services:
     env_file:
       - .env
     ports:
-      - "27017:27017"
+      - "27018:27017"
     volumes:
       - mongodb_data:/data/db
     networks:
-      - auth-network
+      - services-network
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USER}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
@@ -44,4 +42,7 @@ services:
 
 volumes:
   mongodb_data:
-    driver: local
+
+networks:
+  services-network:
+    driver: bridge

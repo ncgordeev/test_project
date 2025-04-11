@@ -29,7 +29,7 @@ class SignupView(APIView):
             # Проверка наличия email и пароля
             if not email or not password:
                 return Response(
-                    {"error": "Email or password are required"},
+                    {"error": "Email and password are required"},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
 

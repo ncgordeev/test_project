@@ -37,7 +37,8 @@ filterwarnings = [
     "ignore::UserWarning"
 ]
 markers = [
-    "unit: тесты на единичные компоненты"
+    "unit: тесты на единичные компоненты",
+    "e2e: тесты, проверяющие поведение системы в целом"
 ]
 python_files = ["test_*.py", "*_test.py", "*tests.py"]
 testpaths = ["src"]

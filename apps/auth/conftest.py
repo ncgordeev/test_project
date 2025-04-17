@@ -12,8 +12,9 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")
 
 # Импортируем компоненты Django после настройки DJANGO_SETTINGS_MODULE
 from django.conf import settings
-from rest_framework.test import APIClient
+
 from src.users.utils import get_db_handle, users_collection
+from rest_framework.test import APIClient
 
 # fmt: off
 pytest_plugins = [

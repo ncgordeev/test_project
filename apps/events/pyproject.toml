@@ -3,35 +3,21 @@ build-backend = "poetry.core.masonry.api"
 requires = ["poetry-core"]
 
 [tool.poetry]
-authors = [""]
+name = "events"
+version = "0.1.0"
 description = ""
-name = ""
+authors = ["ncgordeev <ncgordeev@gmail.com>"]
 readme = "README.md"
-version = ""
 
 [tool.poetry.dependencies]
-
+python = ">=3.10"
+django = "^5.2"
+djangorestframework = "^3.16.0"
+python-dotenv = "^1.1.0"
+psycopg2-binary = "^2.9.10"
+django-filter = "^25.1"
 
 [tool.poetry.group.dev.dependencies]
+black = "^25.1.0"
+isort = "^6.0.1"
 
-[tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "core.settings"
-addopts = "--reuse-db"
-env = [
-
-]
-filterwarnings = [
-
-]
-markers = [
-
-]
-python_files = "test*.py"
-
-[tool.tomlsort]
-all = true
-in_place = true
-sort_first = ["tool.poetry"]
-spaces_before_inline_comment = 2
-spaces_indent_inline_array = 4
-trailing_comma_inline_array = true

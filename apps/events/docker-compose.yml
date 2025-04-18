@@ -1,0 +1,38 @@
+services:
+  events-service:
+    container_name: "events"
+    image: events-service
+    build: .
+    tty: true
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      postgres-db:
+        condition: service_started
+      auth-service-api:
+        condition: service_started
+    expose:
+      - "8001"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.event-service.rule=Host(`events.localhost`) && PathPrefix(`/`)"
+      - "traefik.http.routers.event-service.entryPoints=web"
+      - "traefik.http.routers.event-service.middlewares=forward-auth-middleware"
+      - "traefik.http.services.event-service.loadbalancer.server.port=80"
+    networks:
+      - services-network
+
+  postgres-db:
+    container_name: "postgres-db"
+    image: postgres:latest
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - services-network
+
+volumes:
+  postgres_data:

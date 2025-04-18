@@ -7,6 +7,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 ENV PATH="${PATH}:/root/.local/bin"
+RUN poetry config virtualenvs.create false
 
 WORKDIR /app
 

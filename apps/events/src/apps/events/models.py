@@ -42,13 +42,13 @@ class Event(models.Model):
     all_objects = models.Manager()
 
     class Meta:
-        verbose_name = ("Мероприятие",)
+        verbose_name = "Мероприятие"
         verbose_name_plural = "Мероприятия"
         ordering = ["-event_date", "title"]
 
         indexes = [
             models.Index(fields=["event_date"]),
-            models.Index(fields=["is_deleted"])
+            models.Index(fields=["is_deleted"]),
         ]
 
     def __str__(self):
@@ -57,7 +57,7 @@ class Event(models.Model):
     def delete(self, *args, **kwargs):
         """Переопределяем метод delete для реализации soft-delete"""
         # Если передан параметр hard_delete=True, то удаляем запись физически
-        hard_delete = kwargs.pop('hard_delete', False)
+        hard_delete = kwargs.pop("hard_delete", False)
         if hard_delete:
             return super().delete(*args, **kwargs)
 

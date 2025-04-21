@@ -1,9 +1,11 @@
 from django_filters import rest_framework as filters
+
 from apps.events.models import Event
 
 
 class EventFilter(filters.Filter):
     """Фильтр мероприятий по датам."""
+
     # Фильтр по конкретной дате
     date = filters.DateFilter(field_name="event_date", lookup_expr="date")
 

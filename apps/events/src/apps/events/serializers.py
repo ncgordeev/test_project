@@ -30,8 +30,8 @@ class EventSerializer(serializers.ModelSerializer):
     def validate(self, data):
         """Проверка корректности цены и количества билетов."""
         if (
-                data.get("available_tickets") is not None
-                and data.get("available_tickets") < 0
+            data.get("available_tickets") is not None
+            and data.get("available_tickets") < 0
         ):
             raise serializers.ValidationError(
                 "Количество билетов не может быть отрицательным!"

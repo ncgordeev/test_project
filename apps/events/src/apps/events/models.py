@@ -38,7 +38,7 @@ class Event(models.Model):
 
     is_deleted = models.BooleanField(default=False, verbose_name="Мероприятие удалено")
 
-    object = EventManager()
+    objects = EventManager()
     all_objects = models.Manager()
 
     class Meta:

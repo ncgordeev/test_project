@@ -119,7 +119,7 @@ LOGGING = {
     },
     "handlers": {
         "file": {
-            "level": "WARNING",
+            "level": "INFO",
             "class": "logging.FileHandler",
             "filename": os.path.join(LOG_DIR, "events.log"),
             "formatter": "verbose",
@@ -133,7 +133,7 @@ LOGGING = {
     "loggers": {
         "events": {
             "handlers": ["file", "console"],
-            "level": "WARNING",
+            "level": "INFO",
             "propagate": True,
         },
     },

@@ -9,7 +9,7 @@ class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = [
+        fields = (
             "id",
             "title",
             "description",
@@ -17,7 +17,7 @@ class EventSerializer(serializers.ModelSerializer):
             "available_tickets",
             "ticket_price",
             "is_deleted",
-        ]
+        )
 
     def validate_event_date(self, value):
         """Проверка, что дата мероприятия не в прошлом."""

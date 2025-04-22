@@ -3,7 +3,7 @@ from django_filters import rest_framework as filters
 from apps.events.models import Event
 
 
-class EventFilter(filters.Filter):
+class EventFilter(filters.FilterSet):
     """Фильтр мероприятий по датам."""
 
     # Фильтр по конкретной дате

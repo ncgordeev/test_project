@@ -31,10 +31,7 @@ class TestSignin:
     @pytest.mark.unit
     def test_user_not_found(self, api_client):
         """Test signin with non-existent user"""
-        data = {
-            "email": "nonexistent@example.com",
-            "password": "some_password"
-        }
+        data = {"email": "nonexistent@example.com", "password": "some_password"}
         response = api_client.post("/signin/", data, format="json")
 
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
@@ -44,10 +41,7 @@ class TestSignin:
     @pytest.mark.unit
     def test_invalid_password(self, api_client, test_user):
         """Test signin with incorrect password"""
-        data = {
-            "email": test_user["email"],
-            "password": "wrong_password"
-        }
+        data = {"email": test_user["email"], "password": "wrong_password"}
         response = api_client.post("/signin/", data, format="json")
 
         assert response.status_code == status.HTTP_401_UNAUTHORIZED

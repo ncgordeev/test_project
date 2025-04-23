@@ -1,9 +1,10 @@
+from datetime import datetime, timedelta
+
+import jwt
 import pytest
+from django.conf import settings
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
-from datetime import datetime, timedelta
-import jwt
-from django.conf import settings
 
 pytestmark = [pytest.mark.e2e]
 
@@ -26,7 +27,11 @@ def expired_token(test_user):
         "exp": datetime.utcnow() - timedelta(hours=1),
         "iat": datetime.utcnow() - timedelta(hours=2),
     }
-    token = jwt.encode(payload, settings.SIMPLE_JWT["SIGNING_KEY"], algorithm=settings.SIMPLE_JWT["ALGORITHM"])
+    token = jwt.encode(
+        payload,
+        settings.SIMPLE_JWT["SIGNING_KEY"],
+        algorithm=settings.SIMPLE_JWT["ALGORITHM"],
+    )
     return f"Bearer {token}"
 
 

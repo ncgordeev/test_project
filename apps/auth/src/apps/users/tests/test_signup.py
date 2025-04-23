@@ -21,9 +21,7 @@ class TestSignup:
     @pytest.mark.unit
     def test_missing_email(self, api_client):
         """Test signup with missing email"""
-        data = {
-            "password": "secure_password123"
-        }
+        data = {"password": "secure_password123"}
         response = api_client.post("/signup/", data, format="json")
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
@@ -33,9 +31,7 @@ class TestSignup:
     @pytest.mark.unit
     def test_missing_password(self, api_client):
         """Test signup with missing password"""
-        data = {
-            "email": "user@example.com"
-        }
+        data = {"email": "user@example.com"}
         response = api_client.post("/signup/", data, format="json")
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
@@ -45,10 +41,7 @@ class TestSignup:
     @pytest.mark.unit
     def test_invalid_email_format(self, api_client):
         """Test signup with invalid email format"""
-        data = {
-            "email": "invalid_email",
-            "password": "secure_password123"
-        }
+        data = {"email": "invalid_email", "password": "secure_password123"}
         response = api_client.post("/signup/", data, format="json")
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
@@ -58,10 +51,7 @@ class TestSignup:
     @pytest.mark.unit
     def test_duplicate_user(self, api_client, test_user):
         """Test signup with an email that already exists"""
-        data = {
-            "email": test_user["email"],
-            "password": "some_password"
-        }
+        data = {"email": test_user["email"], "password": "some_password"}
         response = api_client.post("/signup/", data, format="json")
 
         assert response.status_code == status.HTTP_409_CONFLICT

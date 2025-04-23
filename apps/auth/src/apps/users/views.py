@@ -7,6 +7,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from core.settings import ADMIN_SECRET
+
 from .authentication import MongoJWTAuthentication
 from .utils import users_collection
 
@@ -50,10 +52,17 @@ class SignupView(APIView):
             hashed_pw = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
 
             # Создание пользователя
+            role = "user"
+            if request.data.get("role") == "admin":
+                if request.data.get("admin_secret") != ADMIN_SECRET:
+                    return Response({"error": "Invalid admin secret"}, status=403)
+                role = "admin"
+
             user_data = {
                 "email": email,
                 "password": hashed_pw,
                 "created_at": datetime.now(),
+                "role": role,
             }
 
             user = users_collection.insert_one(user_data)

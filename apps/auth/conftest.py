@@ -1,19 +1,20 @@
 import os
-import pytest
 from datetime import datetime
+
 import bcrypt
+import pytest
 from django.core.cache import cache
 from django.test import Client
 from testcontainers.mongodb import MongoDbContainer
-from bson import ObjectId
+
+from apps.users.utils import get_db_handle, users_collection
 
 # Установка переменной окружения для Django перед импортом DRF
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")
 
 # Импортируем компоненты Django после настройки DJANGO_SETTINGS_MODULE
-from django.conf import settings
 
-from src.users.utils import get_db_handle, users_collection
+
 from rest_framework.test import APIClient
 
 # fmt: off
@@ -75,7 +76,7 @@ def admin_user():
         "email": "admin@example.com",
         "password": hashed_pw,
         "created_at": datetime.now(),
-        "role": "admin"
+        "role": "admin",
     }
 
     user_id = users_collection.insert_one(user_data).inserted_id

@@ -12,7 +12,6 @@ dotenv_path = PARENT_DIR / ".env"
 if dotenv_path.exists():
     load_dotenv(dotenv_path)
 
-
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 DEBUG = os.getenv("DEBUG", False) == "True"
@@ -27,7 +26,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "rest_framework_simplejwt",
-    "users",
+    "apps.users",
 ]
 
 MIDDLEWARE = [
@@ -81,7 +80,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 LANGUAGE_CODE = "ru-ru"
 
 TIME_ZONE = "UTC"
@@ -92,11 +90,15 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# Для регистрации админа
+ADMIN_SECRET = os.getenv("ADMIN_SECRET")
+
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": ("users.authentication.MongoJWTAuthentication",),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "apps.users.authentication.MongoJWTAuthentication",
+    ),
 }
 
 SIMPLE_JWT = {

@@ -15,8 +15,7 @@ services:
       - "traefik.http.routers.auth-service-api.entrypoints=web"
       - "traefik.http.services.auth-service-api.loadbalancer.server.port=80"
     depends_on:
-      auth-service-mongodb:
-        condition: service_healthy
+      - auth-service-mongodb
 
   auth-service-mongodb:
     image: mongo:latest
@@ -24,8 +23,6 @@ services:
     restart: always
     env_file:
       - .env
-    ports:
-      - "27018:27017"
     volumes:
       - mongodb_data:/data/db
     networks:
@@ -34,11 +31,6 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USER}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
       MONGO_INITDB_DATABASE: ${MONGODB_NAME}
-    healthcheck:
-      test: [ "CMD", "mongosh", "--eval", "db.adminCommand('ping')" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
 volumes:
   mongodb_data:

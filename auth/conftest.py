@@ -7,7 +7,7 @@ from django.core.cache import cache
 from django.test import Client
 from testcontainers.mongodb import MongoDbContainer
 
-from apps.users.utils import get_db_handle, users_collection
+from .src.apps.users.utils import get_db_handle, users_collection
 
 # Установка переменной окружения для Django перед импортом DRF
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")

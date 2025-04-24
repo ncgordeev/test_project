@@ -12,8 +12,6 @@ services:
         condition: service_started
       auth-service-api:
         condition: service_started
-    expose:
-      - "8001"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.event-service.rule=Host(`events.localhost`) && PathPrefix(`/`)"

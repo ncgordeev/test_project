@@ -22,21 +22,10 @@ services:
     networks:
       - services-network
 
-  whoami:
-    image: traefik/whoami
-    container_name: "whoami"
-    networks:
-      - services-network
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`whoami.localhost`)"
-      - "traefik.http.routers.whoami.entrypoints=web"
-      - "traefik.http.routers.whoami.middlewares=forward-auth-middleware"
-
 networks:
   services-network:
     driver: bridge
 
 include:
-  - ./apps/auth/docker-compose.yml
-  - ./apps/events/docker-compose.yml
+  - auth/docker-compose.yml
+  - events/docker-compose.yml

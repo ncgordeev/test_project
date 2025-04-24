@@ -1,38 +1,31 @@
 services:
-  auth:
-    build: ./apps/auth
-    container_name: auth
-    restart: always
-    env_file:
-      - .env
+  reverse-proxy:
+    image: traefik:v3.3
+    container_name: reverse-proxy
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedByDefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--log.level=DEBUG"
+      - "--accesslog=true"
     ports:
-      - "8000:8000"
+      - "80:80"
+      - "8080:8080"
     volumes:
-      - ./apps/auth:/app
-    depends_on:
-      mongodb:
-        condition: service_healthy
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.forward-auth-middleware.forwardauth.address=http://auth-service-api/auth/"
+      - "traefik.http.middlewares.forward-auth-middleware.forwardauth.trustForwardHeader=true"
+      - "traefik.http.middlewares.forward-auth-middleware.forwardauth.authResponseHeaders=Authorization,X-USER-ROLE"
+    networks:
+      - services-network
 
-  mongodb:
-    image: mongo:latest
-    container_name: mongodb
-    restart: always
-    env_file:
-      - .env
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongodb_data:/data/db
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USER}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
-      MONGO_INITDB_DATABASE: ${MONGODB_NAME}
-    healthcheck:
-      test: [ "CMD", "mongosh", "--eval", "db.adminCommand('ping')" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+networks:
+  services-network:
+    driver: bridge
 
-volumes:
-  mongodb_data:
-    driver: local
+include:
+  - auth/docker-compose.yml
+  - events/docker-compose.yml

@@ -1,0 +1,23 @@
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core"]
+
+[tool.poetry]
+name = "events"
+version = "0.1.0"
+description = ""
+authors = ["ncgordeev <ncgordeev@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.10"
+django = "^5.2"
+djangorestframework = "^3.16.0"
+python-dotenv = "^1.1.0"
+psycopg2-binary = "^2.9.10"
+django-filter = "^25.1"
+
+[tool.poetry.group.dev.dependencies]
+black = "^25.1.0"
+isort = "^6.0.1"
+

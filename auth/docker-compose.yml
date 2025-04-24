@@ -1,0 +1,40 @@
+services:
+  auth-service-api:
+    build: .
+    container_name: auth-service-api
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    networks:
+      - services-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.auth-service-api.rule=Host(`auth.localhost`) && PathPrefix(`/`)"
+      - "traefik.http.routers.auth-service-api.entrypoints=web"
+      - "traefik.http.services.auth-service-api.loadbalancer.server.port=80"
+    depends_on:
+      - auth-service-mongodb
+
+  auth-service-mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - services-network
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGODB_NAME}
+
+volumes:
+  mongodb_data:
+
+networks:
+  services-network:
+    driver: bridge
